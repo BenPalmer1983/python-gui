@@ -1,3 +1,16 @@
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Ensure pywebview is ready
+    if (window.pywebview) {
+        loadTheme();
+        toggleTheme();
+        loadDropdown();
+    } else {
+        document.addEventListener("pywebviewready", loadDropdown);
+    }
+});
+
 function toggleTheme() {
     let currentTheme = document.body.getAttribute("data-theme");
     let themeText = document.getElementById("theme-text");
@@ -13,6 +26,7 @@ function toggleTheme() {
 }
 
 function loadTheme() {
+    console.log("Loading theme..."); 
     let savedTheme = localStorage.getItem("theme");
     let themeText = document.getElementById("theme-text");
     if (savedTheme === "dark") {
@@ -24,6 +38,7 @@ function loadTheme() {
 function loadPage(page) {
     let content = document.getElementById("content");
     if (page === 1) {
+        console.log("page 1"); 
         content.innerHTML = `
             <div class="calculation-area">
                 <h1>Calculation Page</h1>
@@ -37,6 +52,7 @@ function loadPage(page) {
     }
     else if (page === 2) 
     {
+        console.log("page 2"); 
         content.innerHTML = `
             <div class="calculation-area">
                 <h1>Select Files</h1>
@@ -54,6 +70,7 @@ function loadPage(page) {
     } 
     else if (page === 3) 
     {
+        console.log("page 3"); 
         content.innerHTML = `
             <div class="calculation-area">
                 <h1>Select Files</h1>
@@ -77,6 +94,7 @@ function loadPage(page) {
     } 
     else if (page === 4) 
     {
+        console.log("page 4"); 
         content.innerHTML = `
             <div class="calculation-area">
                 <h1>Select Files</h1>
@@ -90,7 +108,15 @@ function loadPage(page) {
                     <button class="span-4" onclick="sendFileNameToPython()">Send File Name to Python</button>
                     <h3 id="result"></h3>
                 </div>
+                
+                <h2>Select an Option</h2>
+                <select id="dropdown"></select>
+                    </div>
+                </div>  
             </div>`;
+            
+            loadDropdown();
+            
     } 
     else if (page === 5) 
     {
@@ -105,7 +131,7 @@ function loadPage(page) {
                     <input type="text" class="span-4" id="fileNameInput" placeholder="enter name">
                     <div class="span-2"></div>
                     <button class="span-4" onclick="sendFileNameToPython()">Send File Name to Python</button>
-                    <h3 id="result"></h3>
+                    <h3 id="result"></h3>           
                 </div>
             </div>`;
     } 
@@ -167,6 +193,7 @@ function loadPage(page) {
         <h1>Page ${page}</h1>
         <p>This is another page.</p>
         </div>
+
         `;
     }
 }
@@ -216,6 +243,22 @@ function sendFileNameToPython() {
     }
 }
 
+
+function loadDropdown() {
+    console.log("Loading dropdown..."); 
+    window.pywebview.api.get_data("options.json").then(options => {
+        let dropdown = document.getElementById("dropdown");
+        dropdown.innerHTML = ""; // Clear existing options
+        options.forEach(option => {
+            let opt = document.createElement("option");
+            opt.value = option;
+            opt.textContent = option;
+            dropdown.appendChild(opt);
+        });
+    }).catch(error => console.error("Error loading data:", error));
+}
+
+
 function exitApp() {
     if (window.pywebview) {
         window.pywebview.api.exit_app();
@@ -223,3 +266,28 @@ function exitApp() {
         window.close();
     }
 }
+
+// Function to wait for pywebview to become available
+const waitForPywebview = async () => {
+    return new Promise((resolve) => {
+        const interval = setInterval(() => {
+            if (typeof pywebview !== 'undefined' && pywebview.api) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, 100); // Check every 100ms if pywebview is available
+    });
+};
+
+const boot = async () => {
+try {
+await waitForPywebview(); // Wait for pywebview to be available
+// do something with pywebview python api here
+} catch (error) {
+console.error('Error waiting for pywebview:', error);
+}
+};
+
+onMounted(() => {
+boot();
+});

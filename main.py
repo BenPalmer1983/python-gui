@@ -1,5 +1,6 @@
 import webview
 import os
+import json
 import subprocess
 import sys
 import matplotlib
@@ -51,6 +52,12 @@ class API:
         img_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
 
         return img_base64
+    
+    def get_data(self, file_name):
+        print("aaaa")
+        with open(file_name, "r") as file:
+            data = json.load(file)
+        return data["options"]
         
 
     def exit_app(self):
@@ -76,14 +83,14 @@ html_content = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{app_name}}</title>
-    <style>
-    {{style}}
-    </style>    
     <script>
     {{script}}
     </script>
+    <style>
+    {{style}}
+    </style>    
 </head>
-<body onload="loadTheme()">
+<body">
     <div class="header">{{app_name}}</div>
     <div class="main-container">
         <div class="sidebar">
@@ -97,7 +104,7 @@ html_content = """
                 <button onclick="loadPage(6)">Page 6</button>
                 <button onclick="loadPage(7)">Page 7</button>
                 <button onclick="loadPage(8)">Page 8</button>
-                <button margin-top: 20px;" onclick="exitApp()">Exit</button>
+                <button onclick="exitApp()">Exit</button>
             </div>
             <div class="toggle-container">
                 <span id="theme-text" style="color: white;">Dark Mode</span>
@@ -109,8 +116,7 @@ html_content = """
         </div>
         <div class="content" id="content">
             <h1>Welcome! Select an option from the menu.</h1>
-        </div>
-    </div>      
+    
 </body>
 </html>
 """
@@ -128,4 +134,5 @@ with open(html_file, "w", encoding="utf-8") as fh:
 
 # Open in pywebview with API
 webview.create_window(vars['app_name'], f"file://{os.path.abspath(html_file)}", js_api=api, width=1200, height=800)
-webview.start()
+#webview.start()
+webview.start(debug=True)
