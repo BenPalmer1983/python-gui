@@ -89,10 +89,14 @@ html_content = """
         <div class="sidebar">
             <div class="menu">
                 <h3 style="color: white;">Menu</h3>
-                <button onclick="loadPage(1)">Page 1 (Calculation)</button>
-                <button onclick="loadPage(2)">Page 2</button>
-                <button onclick="loadPage(3)">Page 3</button>
+                <button onclick="loadPage(1)">Calculation</button>
+                <button onclick="loadPage(2)">Mod File</button>
+                <button onclick="loadPage(3)">Plotter</button>
                 <button onclick="loadPage(4)">Page 4</button>
+                <button onclick="loadPage(5)">Page 5</button>
+                <button onclick="loadPage(6)">Page 6</button>
+                <button onclick="loadPage(7)">Page 7</button>
+                <button onclick="loadPage(8)">Page 8</button>
                 <button margin-top: 20px;" onclick="exitApp()">Exit</button>
             </div>
             <div class="toggle-container">
@@ -123,5 +127,5 @@ with open(html_file, "w", encoding="utf-8") as fh:
     fh.write(html_content)
 
 # Open in pywebview with API
-webview.create_window(vars['app_name'], f"file://{os.path.abspath(html_file)}", js_api=api, width=800, height=600)
+webview.create_window(vars['app_name'], f"file://{os.path.abspath(html_file)}", js_api=api, width=1200, height=800)
 webview.start()

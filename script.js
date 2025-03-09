@@ -75,6 +75,91 @@ function loadPage(page) {
             `;
         });
     } 
+    else if (page === 4) 
+    {
+        content.innerHTML = `
+            <div class="calculation-area">
+                <h1>Select Files</h1>
+                <p>Information here.</p>
+                <div class="input-container">
+                    <label for="myfile" class="span-2">Select a file:</label> 
+                    <input type="file" class="span-4" id="fileInput" onchange="handleFileUpload(event)">
+                    <label for="myfile" class="span-2">Output file:</label> 
+                    <input type="text" class="span-4" id="fileNameInput" placeholder="enter name">
+                    <div class="span-2"></div>
+                    <button class="span-4" onclick="sendFileNameToPython()">Send File Name to Python</button>
+                    <h3 id="result"></h3>
+                </div>
+            </div>`;
+    } 
+    else if (page === 5) 
+    {
+        content.innerHTML = `
+            <div class="calculation-area">
+                <h1>Select Files</h1>
+                <p>Information here.</p>
+                <div class="input-container">
+                    <label for="myfile" class="span-2">Select a file:</label> 
+                    <input type="file" class="span-4" id="fileInput" onchange="handleFileUpload(event)">
+                    <label for="myfile" class="span-2">Output file:</label> 
+                    <input type="text" class="span-4" id="fileNameInput" placeholder="enter name">
+                    <div class="span-2"></div>
+                    <button class="span-4" onclick="sendFileNameToPython()">Send File Name to Python</button>
+                    <h3 id="result"></h3>
+                </div>
+            </div>`;
+    } 
+    else if (page === 6) 
+    {
+        content.innerHTML = `
+            <div class="calculation-area">
+                <h1>Select Files</h1>
+                <p>Information here.</p>
+                <div class="input-container">
+                    <label for="myfile" class="span-2">Select a file:</label> 
+                    <input type="file" class="span-4" id="fileInput" onchange="handleFileUpload(event)">
+                    <label for="myfile" class="span-2">Output file:</label> 
+                    <input type="text" class="span-4" id="fileNameInput" placeholder="enter name">
+                    <div class="span-2"></div>
+                    <button class="span-4" onclick="sendFileNameToPython()">Send File Name to Python</button>
+                    <h3 id="result"></h3>
+                </div>
+            </div>`;
+    } 
+    else if (page === 7) 
+    {
+        content.innerHTML = `
+            <div class="calculation-area">
+                <h1>Select Files</h1>
+                <p>Information here.</p>
+                <div class="input-container">
+                    <label for="myfile" class="span-2">Select a file:</label> 
+                    <input type="file" class="span-4" id="fileInput" onchange="handleFileUpload(event)">
+                    <label for="myfile" class="span-2">Output file:</label> 
+                    <input type="text" class="span-4" id="fileNameInput" placeholder="enter name">
+                    <div class="span-2"></div>
+                    <button class="span-4" onclick="sendFileNameToPython()">Send File Name to Python</button>
+                    <h3 id="result"></h3>
+                </div>
+            </div>`;
+    } 
+    else if (page === 8) 
+    {
+        content.innerHTML = `
+            <div class="calculation-area">
+                <h1>Select Files</h1>
+                <p>Information here.</p>
+                <div class="input-container">
+                    <label for="myfile" class="span-2">Select a file:</label> 
+                    <input type="file" class="span-4" id="fileInput" onchange="handleFileUpload(event)">
+                    <label for="myfile" class="span-2">Output file:</label> 
+                    <input type="text" class="span-4" id="fileNameInput" placeholder="enter name">
+                    <div class="span-2"></div>
+                    <button class="span-4" onclick="sendFileNameToPython()">Send File Name to Python</button>
+                    <h3 id="result"></h3>
+                </div>
+            </div>`;
+    } 
     else 
     {
         content.innerHTML = `
