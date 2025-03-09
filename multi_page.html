@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generic App</title>
+    <style>
+    :root {
+    --bg-color: #ffffff;
+    --sidebar-bg: #2a2a2a;
+    --content-bg: #e3e3e3;
+    --text-color: #000000;
+    --button-bg: #007BFF;
+    --button-text: #ffffff;
+    --toggle-bg: #ccc;
+    --h-font-size: 18px;
+    --p-font-size: 14px;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1e1e1e;
+    --sidebar-bg: #1a1a1a;
+    --content-bg: #333;
+    --text-color: #ffffff;
+    --button-bg: #17a2b8;
+    --button-text: #000000;
+    --toggle-bg: #555;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    background: var(--sidebar-bg);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.main-container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 200px;
+    background: var(--sidebar-bg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    padding: 10px 15px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.menu button:hover {
+    opacity: 0.8;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--toggle-bg);
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #007BFF;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.content {
+    flex: 1;
+    background: var(--content-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.content h1, .content p {
+    text-align: left;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 20px;
+}
+
+.content h1{
+    font-size: var(--h-font-size);
+}
+
+.content p {
+    font-size: var(--p-font-size);
+}
+
+
+.file-upload {
+    display: flex;
+    align-items: left;
+    valign: left;
+    justify-content: left;
+    width: 100%;
+    font-size: var(--p-font-size);
+}
+
+.file-upload label {
+    margin-right: 10px;
+    white-space: nowrap;
+    display: flex;
+    align-items: left;
+    valign: center;
+    font-size: var(--p-font-size);
+}
+
+.file-upload input {
+    flex: 1;
+    valign: center;
+    font-size: var(--p-font-size);
+}
+
+.input-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    flex-direction: column;
+    align-items: left;
+    max-width: 400px;
+    font-size: var(--p-font-size);
+}
+
+.input-container input, .input-container button, .input-container label {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    font-size: var(--p-font-size);
+}
+
+.calculation-area {
+    text-align: center;
+    width: 100%;
+}
+
+
+.span-2 {
+    grid-column: span 2;
+}
+
+
+.span-4 {
+    grid-column: span 4;
+}
+
+.span-6 {
+    grid-column: span 6;
+}
+    </style>    
+    <script>
+    function toggleTheme() {
+    let currentTheme = document.body.getAttribute("data-theme");
+    let themeText = document.getElementById("theme-text");
+    if (currentTheme === "dark") {
+        document.body.removeAttribute("data-theme");
+        localStorage.setItem("theme", "light");
+        themeText.innerText = "Dark Mode";
+    } else {
+        document.body.setAttribute("data-theme", "dark");
+        localStorage.setItem("theme", "dark");
+        themeText.innerText = "Light Mode";
+    }
+}
+
+function loadTheme() {
+    let savedTheme = localStorage.getItem("theme");
+    let themeText = document.getElementById("theme-text");
+    if (savedTheme === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+        themeText.innerText = "Light Mode";
+    }
+}
+
+function loadPage(page) {
+    let content = document.getElementById("content");
+    if (page === 1) {
+        content.innerHTML = `
+            <div class="calculation-area">
+                <h1>Calculation Page</h1>
+                <div class="input-container">
+                    <input type="number" id="num1" placeholder="Enter number 1" required>
+                    <input type="number" id="num2" placeholder="Enter number 2" required>
+                    <button onclick="calculate()">Calculate</button>
+                    <h3 id="result"></h3>
+                </div>
+            </div>`;
+    }
+    else if (page === 2) 
+    {
+        content.innerHTML = `
+            <div class="calculation-area">
+                <h1>Select Files</h1>
+                <p>Information here.</p>
+                <div class="input-container">
+                    <label for="myfile" class="span-2">Select a file:</label> 
+                    <input type="file" class="span-4" id="fileInput" onchange="handleFileUpload(event)">
+                    <label for="myfile" class="span-2">Output file:</label> 
+                    <input type="text" class="span-4" id="fileNameInput" placeholder="enter name">
+                    <div class="span-2"></div>
+                    <button class="span-4" onclick="sendFileNameToPython()">Send File Name to Python</button>
+                    <h3 id="result"></h3>
+                </div>
+            </div>`;
+    } 
+    else if (page === 3) 
+    {
+        content.innerHTML = `
+            <div class="calculation-area">
+                <h1>Select Files</h1>
+                <p>Information here.</p>
+                <div class="input-container">
+                    <label for="myfile" class="span-2">Select a file:</label> 
+                    <input type="file" class="span-4" id="fileInput" onchange="handleFileUpload(event)">
+                    <label for="myfile" class="span-2">Output file:</label> 
+                    <input type="text" class="span-4" id="fileNameInput" placeholder="enter name">
+                    <div class="span-2"></div>
+                    <button class="span-4" onclick="sendFileNameToPython()">Send File Name to Python</button>
+                    <h3 id="result"></h3>
+                </div>
+            </div>`;
+
+        window.pywebview.api.generatePlot().then(imageData => {
+            document.getElementById("content").innerHTML = `
+                <img src="data:image/png;base64,${imageData}" alt="Generated Plot" style="max-width: 100%;">
+            `;
+        });
+    } 
+    else 
+    {
+        content.innerHTML = `
+        <div class="calculation-area">
+        <h1>Page ${page}</h1>
+        <p>This is another page.</p>
+        </div>
+        `;
+    }
+}
+
+
+
+function calculate() {
+    let num1 = document.getElementById("num1").value;
+    let num2 = document.getElementById("num2").value;
+    window.pywebview.api.calculate(num1, num2).then(result => {
+        document.getElementById("result").innerText = result;
+    });
+}
+
+let selectedFile = null;
+
+function handleFileUpload(event) {
+    selectedFile = event.target.files[0];
+    if (selectedFile) {
+        let fileName = selectedFile.name;
+        let fileParts = fileName.split('.');
+        if (fileParts.length > 1) {
+            let extension = fileParts.pop();
+            let newFileName = fileParts.join('.') + " (copy)." + extension;
+            document.getElementById("fileNameInput").value = newFileName;
+        } else {
+            document.getElementById("fileNameInput").value = fileName + " (copy)";
+        }
+    } else {
+        alert("No file selected.");
+    }
+}
+
+function sendFileNameToPython() {
+    if (selectedFile) {                
+        let filePath = selectedFile.path || selectedFile.name; // Get full path if possible
+        window.pywebview.api.processFile(selectedFile.name).then(response => {
+            document.getElementById("content").innerHTML = `
+                <h1>File Submitted</h1>
+                <p><a href="#" onclick="window.pywebview.api.openFileLocation('${filePath}'); return false;">
+                    Open File Location
+                </a></p>
+            `;
+        });
+    } else {
+        alert("No file selected.");
+    }
+}
+
+function exitApp() {
+    if (window.pywebview) {
+        window.pywebview.api.exit_app();
+    } else {
+        window.close();
+    }
+}
+    </script>
+</head>
+<body onload="loadTheme()">
+    <div class="header">Generic App</div>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="menu">
+                <h3 style="color: white;">Menu</h3>
+                <button onclick="loadPage(1)">Page 1 (Calculation)</button>
+                <button onclick="loadPage(2)">Page 2</button>
+                <button onclick="loadPage(3)">Page 3</button>
+                <button onclick="loadPage(4)">Page 4</button>
+                <button margin-top: 20px;" onclick="exitApp()">Exit</button>
+            </div>
+            <div class="toggle-container">
+                <span id="theme-text" style="color: white;">Dark Mode</span>
+                <label class="switch">
+                    <input type="checkbox" onclick="toggleTheme()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="content" id="content">
+            <h1>Welcome! Select an option from the menu.</h1>
+        </div>
+    </div>      
+</body>
+</html>
