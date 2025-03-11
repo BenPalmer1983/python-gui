@@ -15,7 +15,7 @@ class App(tk.Tk):
 
         self.configure(bg=UIStyle.background)
 
-        self.title("Tkinter Multi-Page UI")
+        self.title("My Generic App")
         self.geometry("1000x650")
         self.resizable(False, False)
 
@@ -54,7 +54,7 @@ class App(tk.Tk):
             btn = ttk.Button(self.sidebar, text=page.button_text, command=lambda p=page: self.show_page(p), style="Sidebar.TButton")
             btn.pack(pady=10, padx=10, fill="x")
 
+
     def show_page(self, page):
-        """Display the selected page."""
         self.pages[page].tkraise()
 
