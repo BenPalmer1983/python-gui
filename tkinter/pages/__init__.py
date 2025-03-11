@@ -1,3 +1,4 @@
 
-from .page_one import PageOne
-from .page_two import PageTwo
+from .PageOne import PageOne
+from .PageTwo import PageTwo
+from .PageThree import PageThree

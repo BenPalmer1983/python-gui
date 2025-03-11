@@ -1,52 +1,57 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
-from pages import PageOne, PageTwo
+from pages import PageOne, PageTwo, PageThree
+from ui import UIStyle
 
 # ------------------ Main App Class ------------------
 class App(tk.Tk):
+
+    page_list = [PageOne, PageTwo, PageThree]
+
     def __init__(self):
         super().__init__()
         
-        style = ttk.Style()
-        style.configure("TLabel", font=("Arial", 12), background="white", foreground="#333")
-        style.configure("TButton", font=("Arial", 11, "bold"), padding=6, background="#34495E", foreground="white")
-        style.configure("TEntry", font=("Arial", 11), padding=5)
-        style.configure("TCombobox", font=("Arial", 11), padding=5)
+        UIStyle.set_style()
+
+        self.configure(bg=UIStyle.background)
 
         self.title("Tkinter Multi-Page UI")
-        self.geometry("900x600")
+        self.geometry("1000x650")
         self.resizable(False, False)
 
+        
+
         # ------------------ Header ------------------
-        header = tk.Frame(self, bg="#34495E", height=50)
+        header = ttk.Frame(self, height=50, style="TFrame")
         header.pack(side="top", fill="x")
 
-        header_label = tk.Label(header, text="My Generic App", fg="white", bg="#34495E", font=("Arial", 14, "bold"))
+        header_label = ttk.Label(header, text="My Generic App", style="Header.TLabel")
         header_label.pack(pady=10)
 
-        # ------------------ Sidebar ------------------
-        self.sidebar = tk.Frame(self, width=150, bg="#2C3E50")
-        self.sidebar.pack(side="left", fill="y")
+        self.sidebar = ttk.Frame(self, width=150, style="Sidebar.TFrame")
+        self.sidebar.pack(side="left", fill="y", pady=20)
 
         # Container for Pages
-        self.container = tk.Frame(self, bg="white")
-        self.container.pack(side="right", fill="both", expand=True, padx=2, pady=2)
+        self.container = ttk.Frame(self, style="PageContainer.TFrame")
+        self.container.pack(side="right", fill="both", expand=True, padx=0, pady=0)
 
         # Dictionary to store pages
         self.pages = {}
-        for Page in (PageOne, PageTwo):
-            page_instance = Page(self.container, self)
-            self.pages[Page] = page_instance
+        for page in self.page_list:
+            page_instance = page(self.container, self)
+            self.pages[page] = page_instance
             page_instance.grid(row=0, column=0, sticky="nsew")
 
         # Sidebar Buttons
         self.create_sidebar_buttons()
         self.show_page(PageOne)  # Show Home Page initially
 
+
+   
+
     def create_sidebar_buttons(self):
-        buttons = [("Page One", PageOne), ("Page Two", PageTwo)]
-        for text, page in buttons:
-            btn = ttk.Button(self.sidebar, text=text, command=lambda p=page: self.show_page(p))
+        for page in self.page_list:
+            btn = ttk.Button(self.sidebar, text=page.button_text, command=lambda p=page: self.show_page(p), style="Sidebar.TButton")
             btn.pack(pady=10, padx=10, fill="x")
 
     def show_page(self, page):
